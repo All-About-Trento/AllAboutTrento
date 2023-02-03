@@ -1,0 +1,226 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "AllAboutTrento",
+    "description": "AllAboutTrento Application API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "API per gli utenti nel sistema"
+    }
+  ],
+  "schemes": [ "http" ],
+  "consumes": [ "application/json" ],
+  "produces": [ "application/json" ],
+  "definitions": {
+    "Poi": {
+      "required": [ "nome,tipologia,descrizione,posizione,stato,orari_apertura,immagine" ],
+      "properties": {
+        "nome": {
+          "type": "string"
+        },
+        "tipologia": {
+          "type": "string"
+        },
+        "descrizione": {
+          "type": "string"
+        },
+        "posizione": {
+          "type": "string"
+        },
+        "stato": {
+          "type": "string"
+        },
+        "orari_apertura": {
+          "type": "string"
+        },
+        "immagine": {
+          "type": "string"
+        }
+      }
+    },
+    "Review": {
+      "required": [ "titolo,descrizione,valutazione,utenteId,poiId" ],
+      "properties": {
+        "titolo": {
+          "type": "string"
+        },
+        "descrizione": {
+          "type": "string"
+        },
+        "valutazione": {
+          "type": "integer"
+        },
+        "utenteId": {
+          "type": "string"
+        },
+        "poiId": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/pois": {
+      "get": {
+        "tags": [ "Pois" ],
+        "summary": "Get all poi in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/Poi" }
+          }
+        }
+      },
+      "post": {
+        "tags": [ "Pois" ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "Il poi da creare",
+            "schema": {
+              "type": "object",
+              "required": [ "nome,tipologia,descrizione,posizione,stato,orari_apertura,immagine" ],
+              "properties": {
+                "nome": {
+                  "type": "string"
+                },
+                "tipologia": {
+                  "type": "string"
+                },
+                "descrizione": {
+                  "type": "string"
+                },
+                "posizione": {
+                  "type": "string"
+                },
+                "stato": {
+                  "type": "string"
+                },
+                "orari_apertura": {
+                  "type": "string"
+                },
+                "immagine": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "summary": "Post one poi in the system",
+        "responses": {
+          "201": {
+            "description": "Poi salvato nel database",
+            "schema": { "$ref": "#/definitions/Poi" }
+          }
+        }
+      }
+    },
+    "/pois/{poiId}": {
+      "delete": {
+        "tags": [ "Pois" ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "poiId",
+            "description": "L'id del poi da cancellare",
+            "schema": {
+              "type": "string",
+              "required": true
+            }
+          }
+        ],
+        "summary": "Delete one specific poi in system",
+        "responses": {
+          "204": {
+            "description": "Poi eliminato dal database",
+            "schema": { "$ref": "#/definitions/Poi" }
+          }
+        }
+      }
+    },
+    "/reviews": {
+      "get": {
+        "tags": [ "Reviews" ],
+        "summary": "Get all reviews in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/Review" }
+          }
+        }
+      },
+      "post": {
+        "tags": [ "Reviews" ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "La review da creare",
+            "schema": {
+              "type": "object",
+              "required": [ "titolo , descrizione ,valutazione,utente,poi" ],
+              "properties": {
+                "titolo": {
+                  "type": "string"
+                },
+                "descrizione": {
+                  "type": "string"
+                },
+                "valutazione": {
+                  "type": "integer"
+                },
+                "utente": {
+                  "type": "string"
+                },
+                "poi": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "summary": "One user post a review about one poi",
+        "responses": {
+          "201": {
+            "description": "Review salvato nel database",
+            "schema": { "$ref": "#/definitions/Review" }
+          }
+        }
+      }
+
+    },
+    "/reviews/{reviewId}": {
+      "delete": {
+        "tags": [ "Reviews" ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "reviewId",
+            "description": "L'id della review da cancellare",
+            "schema": {
+              "type": "string",
+              "required": true
+            }
+          }
+        ],
+        "summary": "Delete one review in system",
+        "responses": {
+          "204": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/Review" }
+          }
+        }
+      }
+    }
+  }
+}
