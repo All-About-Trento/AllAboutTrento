@@ -71,7 +71,7 @@ router.delete('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
     let poi = await Poi.findById(req.params.id);
     if(poi){
-        let poiUpdate = await Poi.findByIdAndUpdate(req.params.id,{$set:{nome:nome , descrizione:descrizione , posizione:pos , stato:stato , orari:orari_apertura}},{new:true,runValidators:true});
+        let poiUpdate = await Poi.findByIdAndUpdate(req.params.id,{$set:{descrizione:req.body.nDesc}},{new:true,runValidators:true});
         res.status(201).send();   
     }
     else{

@@ -44,7 +44,7 @@ function cambioPassword(id){
             'x-access-token': loggedUser.token
         },
         body: JSON.stringify( { 
-          oPassword:oldPassword.value , 
+          oPassword : oldPassword.value , 
           nPassword : newPassword.value
         } )
     })

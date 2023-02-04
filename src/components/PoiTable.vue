@@ -14,15 +14,18 @@ const descrizione = ref('')
 const posizione = ref('')
 const stato = ref('')
 const orari_apertura = ref('')
+const newOrario=ref('')
 const immagine = ref('')
 const titolo = ref('')
 const desc = ref('')
+const newDesc=ref('')
 const val = ref('')
 
 const warningMessage = ref('')
 const valMessage = ref('')
 const reviewMessage = ref('')
 const delReviewMessage = ref('')
+const descMessage=ref('')
 let ruoloUtente = false;
 let ruoloGestore = false;
 let poiSelezionato = false;
@@ -51,6 +54,7 @@ onMounted( () => {
 
 watch(loggedUser, (_loggedUser, _prevLoggedUser) => {
   warningMessage.value = ''
+  descMessage.value=''
 })
 
 
@@ -147,6 +151,31 @@ function stampaPos(){
   return poiSelezionato2.posizione;
 }
 
+function updateDesc(id){
+  fetch(HOST+'/pois/'+id, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': loggedUser.token
+        },
+        body: JSON.stringify( {
+          nDesc : newDesc.value
+        } )
+    })
+    .then((resp) => {
+      if(resp.status==204){
+        descMessage.value="Inserisci una stringa";
+        return;
+      }
+      else{
+        descMessage.value='';
+        location.reload();
+        return;
+      }
+    })
+    .catch( error => console.error(error) );
+}
+
 </script>
 
 
@@ -202,7 +231,7 @@ function stampaPos(){
   
   <div v-if="poiSelezionato">
      <h1> {{ poiSelezionato2.nome }} : {{poiSelezionato2.tipologia}}</h1>
-     <h2> {{ poiSelezionato2.descrizione }}</h2>
+     <h2> {{ poiSelezionato2.descrizione }}</h2>  <input v-model="newDesc" v-if="ruoloGestore" placeholder="cambia descrizione"> <button v-if="ruoloGestore" @click="updateDesc(poiSelezionato2.id)">Update</button><br><span style="color: red"> {{descMessage}} </span><br>
      <img v-bind:src ="stampaImg()" height="700" width="1200"> <br>
      <a v-bind:href="stampaPos() "  target="_blank" >Premi qui per la posizione</a>
      <h1> {{ poiSelezionato2.stato }}</h1>
