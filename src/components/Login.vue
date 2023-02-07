@@ -33,7 +33,7 @@ function login() {
     .then(function (data) {
       setLoggedUser(data);
       emit("login", loggedUser);
-      console.log(loggedUser.successo);
+      console.log(loggedUser.token);
       if(loggedUser.successo){
         location.reload();
       }

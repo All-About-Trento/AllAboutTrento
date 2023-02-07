@@ -17,7 +17,7 @@ router.post('', async function(req, res) {
 	}
 	else if (utente.password != req.body.password) {
 		res.json({ success: false, message: 'Password Sbagliata'});
-		console.log("passoword sbagliata");
+		console.log("password sbagliata");
 	}
 	else{
 		var payload = {
@@ -29,7 +29,7 @@ router.post('', async function(req, res) {
 		}
 		var token = jwt.sign(payload, process.env.SUPER_SECRET, options);
 
-		res.json({
+		res.status(200).json({
 			success : true,
 			nome : utente.nome,
 			ruolo : utente.ruolo,

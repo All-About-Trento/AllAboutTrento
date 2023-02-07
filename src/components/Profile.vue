@@ -68,7 +68,7 @@ function cambioPassword(id){
 
 <template>
   <div class="profilo">
-    <h1>Profilo {{ utente.id }}</h1> 
+    <h1>Profilo</h1> 
     <h3>{{ utente.nome }} {{ utente.cognome }}</h3>
     <h3>Email: {{ utente.email }}</h3>
     <p>Numero Telefono : {{ utente.numTelefono }}</p>

@@ -11,6 +11,7 @@ const review= require('./review.js');
 const autenticazione = require('./autenticazione.js');
 const mongoose = require('mongoose');
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
 
@@ -22,18 +23,17 @@ app.use(
     swaggerUi.setup(swaggerDocument)
 );
 
-mongoose.connect(
-    process.env.MONGODB_URL,
-    { useNewUrlParser: true, useUnifiedTopology: true , useFindAndModify:false },
-    (err) => {
-        if (err) return console.log("Error: ", err);
-        console.log("MongoDB Connection -- Ready state is:", mongoose.connection.readyState);
-    }
-);
+const port = process.env.PORT || 8080;
+app.locals.db = mongoose.connect("mongodb+srv://AllAboutTrento:AllAboutTrento@cluster0.52cjtn7.mongodb.net/AllAboutTrento", { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
 
-const listener = app.listen(process.env.PORT || 3000, () => {
-    console.log('Your app is listening on port' + listener.address().port)
-})
+        console.log("Connected to Database");
+
+        app.listen(port, () => {
+            console.log(`Server listening on port ${port}`);
+        });
+
+});
 
 app.use('/autenticazione', autenticazione);
 app.use('/utentis/me', tokenChecker);
@@ -44,3 +44,4 @@ app.use('/utentis', utenti);
 app.use('/reviews', review);
 
 
+module.exports = app;

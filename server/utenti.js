@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Utenti = require('./models/utenti');
+const jwt = require('jsonwebtoken');
 
 
 //login
@@ -56,7 +57,16 @@ router.get('/:id', async (req, res) => {
 
 //post a new utente 
 router.post('', async (req, res) => {
-	let utenti = new Utenti({
+    let email = await Utenti.findOne({email:req.body.email});
+    
+    if(email){
+        res.status(403).json({
+            success : false
+        });
+        return;
+    }
+
+    let utenti = new Utenti({
         nome : req.body.nome,
         cognome : req.body.cognome,
         email : req.body.email,
@@ -68,15 +78,29 @@ router.post('', async (req, res) => {
     utenti = await utenti.save();
     let utentiId = utenti.id;
     console.log('Utente saved successfully');
-    res.json({
+
+    var payload = {
+        email: utenti.email,
+        id: utentiId	
+    }
+    var options = {
+        expiresIn: 86400 // expires in 24 hours
+    }
+    var token = jwt.sign(payload, process.env.SUPER_SECRET, options);
+
+    res.status(201).json({
         nome : req.body.nome,
         cognome : req.body.cognome,
         email : req.body.email,
         numTelefono : req.body.numTelefono,
         password : req.body.password,
-        ruolo : req.body.ruolo
-    })
-    res.location("utentis/" + utentiId).status(201).send();
+        ruolo : utenti.ruolo,
+        success : true,
+        token: token,
+        id: utentiId,
+        self: "/"+ utentiId
+    });
+    
 });
 
 router.put('/:id', async (req, res) => {
@@ -89,5 +113,7 @@ router.put('/:id', async (req, res) => {
         res.status(204).send();
     } 
 });
+
+
 
 module.exports = router;
