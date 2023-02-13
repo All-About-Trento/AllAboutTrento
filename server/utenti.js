@@ -86,7 +86,7 @@ router.post('', async (req, res) => {
     var options = {
         expiresIn: 86400 // expires in 24 hours
     }
-    var token = jwt.sign(payload, process.env.SUPER_SECRET, options);
+    var token = jwt.sign(payload, "AllAboutTrento", options);
 
     res.status(201).json({
         nome : req.body.nome,

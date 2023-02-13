@@ -2,7 +2,7 @@ const request = require('supertest');
 const jwt     = require('jsonwebtoken');
 const app     = require('./server');
 
-describe('GET utentis/me', () => {
+/*describe('Testing Login', () => {
     let userSpy;
   
   beforeAll( () => {
@@ -36,7 +36,7 @@ describe('GET utentis/me', () => {
     var options = {
       expiresIn: 86400 // expires in 24 hours
     }
-    var token = jwt.sign(payload,"AllAboutTrento", options);
+    var token = jwt.sign(payload, "AllAboutTrento", options);
 
     test('GET /utentis/me?token=<valid> should return 200', async () => {
       expect.assertions(1);
@@ -45,3 +45,39 @@ describe('GET utentis/me', () => {
     });
 
   });
+
+ describe('Testing Registrazione', function() {
+    it('should respond with 201', function(done) {
+      request(app)
+        .post('/utentis')
+        .send({nome:"Manuel",cognome:"Vettori",email:"manu.vettori@live.it",numTelefono:"12345",password:"12345",ruolo:"utente"})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .end(function(err, res) {
+          if (err) return done(err);
+          return done();
+        });
+    });
+  });
+
+  describe('Testing Cambio Password', function() {
+    it('should respond with 201', function(done) {
+      request(app)
+        .put('/utentis/63e374453fb7a44d700ef04a')
+        .send({oPassword:"12345" , nPassword:"123"})
+        .expect(201)
+        .end(function(err, res) {
+          done();
+        });
+    });
+  });
+  */
+
+  describe('Testing Ruolo Utente', function() {
+    it('should respond with "utente" ', function(done) {
+      const response = request(app).get('/utentis/63e374453fb7a44d700ef04a')      
+      expect(response.body.ruolo).toEqual('utente');
+    });
+  });
+

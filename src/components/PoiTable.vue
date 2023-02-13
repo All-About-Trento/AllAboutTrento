@@ -235,7 +235,7 @@ function updateDesc(id){
      <img v-bind:src ="stampaImg()" height="700" width="1200"> <br>
      <a v-bind:href="stampaPos() "  target="_blank" >Premi qui per la posizione</a>
      <h1> {{ poiSelezionato2.stato }}</h1>
-     <h1> {{ poiSelezionato2.orari_apertura }}</h1>
+     <h1> Orario di apertura : {{ poiSelezionato2.orari_apertura }}</h1>
      <button @click="tornaIndietro()"> Torna Indietro</button>
   </div>
 
