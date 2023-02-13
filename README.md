@@ -1,27 +1,25 @@
 # AllAboutTrento
 
-This template should help get you started developing with Vue 3 in Vite.
-
 ## Installare npm
 
 ```sh
 npm install
 ```
-### Per avviare l'applicazione e il server in contemporanea dovremo utilizzare due terminali 
+### Per avviare l'applicazione e il server in contemporanea dovremo utilizzare due terminali (creare due powershell su VisualStudio Code)
 
-### Avviare l'applicazione
+### Nel primo terminale bisogna avviare l'applicazione
 
 ```sh
-npm run dev
+npm run start
 ```
 
-### Per avviare il server dobbiamo spostarci nella cartella /server
+### Nel secondo terminale , per avviare il server dobbiamo spostarci nella cartella /server
 
 ```sh
 cd .\server\
 ```
 
-### Per avviare il server
+### E invocare il comando node per avviare effettivamente il server
 
 ```sh
 node .\server.js
