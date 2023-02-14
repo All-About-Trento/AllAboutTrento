@@ -184,7 +184,7 @@ function updateDesc(id){
   
   <div v-if="!poiSelezionato">
   <form v-if="ruoloGestore">
-    <span>Insert a new poi</span>
+    <h1>Inserimento di un nuovo Poi</h1>
     <br />
     <input v-model.string="nome" placeholder="nome"/>
 
