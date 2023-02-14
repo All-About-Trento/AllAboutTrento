@@ -2,12 +2,12 @@ const request = require('supertest');
 const app= require('./server.js');
 
 describe('GET /pois', () => {
-  let bookSpy;
-  let bookSpyFindById;
+  let poiSpy;
+  let poiSpyFindById;
 
   beforeAll( () => {
     const Poi = require('./models/poi');
-    bookSpy = jest.spyOn(Poi, 'find').mockImplementation((criterias) => {
+    poiSpy = jest.spyOn(Poi, 'find').mockImplementation((criterias) => {
       return [{
         id: "6394ad8a19897b010dabcd67",
         nome: "Duomo di Trento"
@@ -16,7 +16,7 @@ describe('GET /pois', () => {
         nome: "Muse"
       }];
     });
-    bookSpyFindById = jest.spyOn(Poi, 'findById').mockImplementation((id) => {
+    poiSpyFindById = jest.spyOn(Poi, 'findById').mockImplementation((id) => {
       if (id=="6394ad8a19897b010dabcd67")
         return {
           id: "6394ad8a19897b010dabcd67",
@@ -28,8 +28,8 @@ describe('GET /pois', () => {
   });
 
   afterAll(async () => {
-    bookSpy.mockRestore();
-    bookSpyFindById.mockRestore();
+    poiSpy.mockRestore();
+    poiSpyFindById.mockRestore();
   });
   
   test('GET /pois should respond with an array of pois', async () => {

@@ -72,12 +72,24 @@ const app     = require('./server');
         });
     });
   });
-  */
-
-  describe('Testing Ruolo Utente', function() {
-    it('should respond with "utente" ', function(done) {
-      const response = request(app).get('/utentis/63e374453fb7a44d700ef04a')      
-      expect(response.body.ruolo).toEqual('utente');
-    });
+  
+describe('Testing Ruolo Utente', () => {
+  test('GET /utentis/63e374453fb7a44d700ef04a should respond with "utente" ', async () => {
+    return request(app)
+      .get('/utentis/63e374453fb7a44d700ef04a')
+      .then( (res) => {
+          expect(res.body.ruolo).toEqual("utente");
+      });
   });
+});
+
+describe('Testing Ruolo Gestore', () => {
+  test('GET /utentis/6399a501490ca809bc4879f9 should respond with "gestore" ', async () => {
+    return request(app)
+      .get('/utentis/6399a501490ca809bc4879f9')
+      .then( (res) => {
+          expect(res.body.ruolo).toEqual("gestore");
+      });
+  });
+});*/
 
