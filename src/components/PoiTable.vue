@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch ,reactive } from 'vue'
 import { loggedUser } from '../states/loggedUser.js'
 import { pois, fetchPois, createPoi, deletePoi } from '../states/poi.js'
 const HOST = import.meta.env.VITE_API_HOST || `http://localhost:8080`
@@ -16,10 +16,11 @@ const stato = ref('')
 const orari_apertura = ref('')
 const newOrario=ref('')
 const immagine = ref('')
-const titolo = ref('')
-const desc = ref('')
+
+const titolo = reactive([])
+const desc = reactive([])
+const val = reactive([])
 const newDesc=ref('')
-const val = ref('')
 
 const warningMessage = ref('')
 const valMessage = ref('')
@@ -102,15 +103,14 @@ function deletePoiButton(poi) {
   delReviewMessage.value='Delete Poi effettuata';
 };
 
-function reviewPoiButton(poi) {
-  console.log(poi);
+function reviewPoiButton(poi,index) {
   console.log(loggedUser.id);
   if (!loggedUser.token) {
     warningMessage.value = 'Please login to review a Poi!'
     return;
   }
 
-  if(val.value<1 || val.value>5){
+  if(val[index]<1 || val[index]>5){
     valMessage.value = 'Valore tra 1 e 5!!'
     return;
   }
@@ -122,7 +122,7 @@ function reviewPoiButton(poi) {
             'Content-Type': 'application/json',
             'x-access-token': loggedUser.token
         },
-        body: JSON.stringify( { titolo: titolo.value ,descrizione:desc.value , valutazione : val.value , utente: loggedUser.id, poi: poi.self } ),
+        body: JSON.stringify( { titolo: titolo[index] ,descrizione: desc[index] , valutazione : val[index] , utente: loggedUser.id, poi: poi.self } ),
     })
     .then((resp) => {
       location.reload();
@@ -213,14 +213,14 @@ function updateDesc(id){
   
     <h1>Poi:</h1> 
     <ul>
-      <li v-for="poi in pois.value" :key="poi.self">
+      <li v-for='(poi,index) in pois.value' :key="index" >
         <button @click="selezionaPoi(poi)">{{poi.nome,poi.descrizione}}</button>
         <a  v-if="ruolo">&ensp;</a>
         <div v-if="ruoloUtente">
-          <input v-model="titolo" placeholder="titolo"/>
-          <input v-model="desc" placeholder="descrizione"/>
-          <input v-model="val" type="number" placeholder="valutazione" min="1" max="5"/> &ensp;
-          <button @click="reviewPoiButton(poi)">REVIEW</button>
+          <input v-model="titolo[index]" placeholder="titolo"/>
+          <input v-model="desc[index]" placeholder="descrizione"/>
+          <input v-model="val[index]" type="number" placeholder="valutazione" min="1" max="5"/> &ensp;
+          <button @click="reviewPoiButton(poi,index)">REVIEW</button>
         </div>
         <span style="color: red"> {{valMessage}} </span>
          &ensp; <button v-if="ruoloGestore" @click="deletePoiButton(poi)">DELETE</button><br>
